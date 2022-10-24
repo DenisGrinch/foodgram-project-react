@@ -52,10 +52,16 @@ class Recipe(models.Model):
         User,
         related_name='recipes',
         on_delete=models.CASCADE,
-        null=True,
+        null=False,
         verbose_name='Автор',
     )
-    text = models.TextField('Описание')
+    text = models.TextField(
+        'Описание',
+        validators=[
+            MinValueValidator(10, message='Минимальное значение 10'),
+            MaxValueValidator(10000, message='Максимальное значение 1000')
+        ]
+    )
     image = models.ImageField(
         'Изображение',
         upload_to='recipes/'
@@ -63,8 +69,8 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления',
         validators=[
-            MinValueValidator(1, message='Минимальное значение 1!'),
-            MaxValueValidator(600, message='Максимальное значение 10000!')
+            MinValueValidator(1, message='Минимальное значение 1'),
+            MaxValueValidator(600, message='Максимальное значение 600')
         ]
     )
     ingredients = models.ManyToManyField(
@@ -104,8 +110,8 @@ class IngredientInRecipe(models.Model):
     amount = models.PositiveSmallIntegerField(
         'Количество',
         validators=[
-            MinValueValidator(1, message='Минимальное количество 1!'),
-            MaxValueValidator(10000, message='Максимальное значение 10000!')
+            MinValueValidator(1, message='Минимальное количество 1'),
+            MaxValueValidator(10000, message='Максимальное значение 10000')
         ]
     )
 

@@ -1,3 +1,4 @@
+from asyncio.log import logger
 from django.contrib.auth import get_user_model
 from django.db.models import F
 from django.shortcuts import get_object_or_404
@@ -40,8 +41,6 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context.get('request').user
-        if user.is_anonymous:
-            return False
         return Subscribe.objects.filter(user=user, author=obj).exists()
 
 
@@ -130,14 +129,10 @@ class RecipeReadSerializer(ModelSerializer):
 
     def get_is_favorited(self, obj):
         user = self.context.get('request').user
-        if user.is_anonymous:
-            return False
         return user.favorites.filter(recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context.get('request').user
-        if user.is_anonymous:
-            return False
         return user.shopping_cart.filter(recipe=obj).exists()
 
 
@@ -182,10 +177,13 @@ class RecipeWriteSerializer(ModelSerializer):
                 raise ValidationError({
                     'ingredients': 'Ингридиенты не могут повторяться!'
                 })
-            if int(item['amount']) <= 0:
-                raise ValidationError({
-                    'amount': 'Количество ингредиента должно быть больше 0!'
-                })
+            try:
+                if int(item['amount']) <= 0:
+                    raise ValidationError({
+                        'amount': 'Количество ингредиента должно быть больше 0'
+                    })
+            except TypeError:
+                logger.error('Значение должно быть числом')
             ingredients_list.append(ingredient)
         return value
 
