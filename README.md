@@ -1,3 +1,4 @@
+![example workflow](https://github.com/denisgrinch/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
 
 # Foodgram
 ### Описание
