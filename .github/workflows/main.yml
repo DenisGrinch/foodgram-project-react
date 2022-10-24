@@ -62,7 +62,7 @@ jobs:
           context: ./backend
           push: true
           tags: ballisticeffect/foodgram:latest
-  build_and_push_to_docker_hub_fron:
+  build_and_push_to_docker_hub_front:
     name: Pushing frontend image to Docker Hub
     runs-on: ubuntu-latest
     needs:
