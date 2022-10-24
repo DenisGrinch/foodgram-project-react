@@ -11,7 +11,7 @@ services:
     restart: always
 
   backend:
-    image: ballisticeffect/foodgram:22.10.22
+    image: ballisticeffect/foodgram:latest
     restart: always
     volumes:
       - static_value:/app/static/
@@ -23,7 +23,7 @@ services:
       - ./.env
 
   frontend:
-    image: ballisticeffect/foodgram-front:21.10.22
+    image: ballisticeffect/foodgram-front:latest
     volumes:
       - ../frontend/:/app/result_build/
 

@@ -42,33 +42,54 @@ jobs:
         cd backend/
         # запустить написанные разработчиком тесты
         python manage.py test
-  build_and_push_to_docker_hub:
+  build_and_push_to_docker_hub_back:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
     steps:
       - name: Check out the repo
-        # Проверка доступности репозитория Docker Hub для workflow
         uses: actions/checkout@v2 
       - name: Set up Docker Buildx
-        # Вызов сборщика контейнеров docker
         uses: docker/setup-buildx-action@v1 
       - name: Login to Docker 
-        # Запуск скрипта авторизации на Docker Hub
         uses: docker/login-action@v1 
         with:
           username: ${{ secrets.DOCKER_HUB_USER }} 
           password: ${{ secrets.DOCKER_HUB_PWD }}
       - name: Push to Docker Hub
-        # Пуш образа в Docker Hub 
         uses: docker/build-push-action@v2 
         with:
           context: ./backend
           push: true
           tags: ballisticeffect/foodgram:latest
+  build_and_push_to_docker_hub_fron:
+    name: Pushing frontend image to Docker Hub
+    runs-on: ubuntu-latest
+    needs:
+      - tests
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to Docker
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          push: true
+          tags: ballisticeffect/foodgram-front:latest
+
   deploy:
     runs-on: ubuntu-latest
-    needs: build_and_push_to_docker_hub
+    needs:
+      - tests
+      - build_and_push_to_docker_hub_back
+      - build_and_push_to_docker_hub_front
     steps:
     - name: executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
@@ -78,11 +99,12 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-          # Выполняет pull образа с DockerHub
-          sudo docker pull ballisticeffect/foodgram
-          #остановка всех контейнеров
-          sudo docker stop $(sudo docker ps -a -q)
-          sudo docker run --rm -d -p 5000:5000 ballisticeffect/foodgram
+          sudo docker compose stop
+          sudo docker compose rm backend
+          sudo docker compose pull backend
+          sudo docker compose rm frontend
+          sudo docker compose pull frontend
+          sudo docker compose up -d --build
   
   send_message:
     runs-on: ubuntu-latest
