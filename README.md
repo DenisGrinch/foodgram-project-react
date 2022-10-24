@@ -1,4 +1,4 @@
-![example workflow](https://github.com/denisgrinch/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
+![example workflow](https://github.com/DenisGrinch/foodgram-project-react/actions/workflows/main.yml/badge.svg)
 
 # Foodgram
 ### Описание
