@@ -5,6 +5,7 @@ from django.db.models import UniqueConstraint
 
 class User(AbstractUser):
     """Кастомная модель пользователя"""
+    id = models.AutoField(primary_key=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = (
         'username',
@@ -28,6 +29,7 @@ class User(AbstractUser):
 
 class Subscribe(models.Model):
     """Модель подписки на авторов"""
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
         User,
         related_name='subscriber',
