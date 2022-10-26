@@ -55,7 +55,6 @@ class Recipe(models.Model):
         User,
         related_name='recipes',
         on_delete=models.CASCADE,
-        null=False,
         verbose_name='Автор',
     )
     text = models.TextField(
