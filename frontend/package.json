@@ -38,6 +38,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://backend:8000/",
-  "homepage": "."
+  "proxy": "http://backend:8000/"
 }
