@@ -1,3 +1,5 @@
+from asyncio.log import logger
+
 from django.contrib.auth import get_user_model
 from django.db.models import F
 from django.shortcuts import get_object_or_404
@@ -174,10 +176,13 @@ class RecipeWriteSerializer(ModelSerializer):
                 raise ValidationError({
                     'ingredients': 'Ингридиенты не могут повторяться!'
                 })
-            if int(item['amount']) <= 0:
-                raise ValidationError({
-                    'amount': 'Количество ингредиента должно быть больше 0'
-                })
+            try:
+                if int(item['amount']) <= 0:
+                    raise ValidationError({
+                        'amount': 'Количество ингредиента должно быть больше 0'
+                    })
+            except TypeError:
+                logger.error('Значение должно быть числом')
             ingredients_list.append(ingredient)
         return value
 
