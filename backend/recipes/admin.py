@@ -7,7 +7,10 @@ from .models import (Favourite, Ingredient, IngredientInRecipe, Recipe,
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'id', 'author', 'added_in_favorites')
+    list_display = (
+        'name', 'id', 'author',
+        'ingredients', 'added_in_favorites'
+    )
     readonly_fields = ('added_in_favorites',)
     list_filter = ('author', 'name', 'tags',)
 
