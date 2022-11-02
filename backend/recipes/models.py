@@ -57,7 +57,7 @@ class Recipe(models.Model):
     )
     text = models.TextField(
         'Описание',
-        validators =[
+        validators=[
             MinLengthValidator(10, message='Минимальная длина 10'),
             MaxLengthValidator(10000, message='Максимальная длина 10000')
         ]
