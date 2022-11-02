@@ -57,10 +57,6 @@ class Recipe(models.Model):
     )
     text = models.TextField(
         'Описание',
-        validators=[
-            MinValueValidator(10, message='Минимальное значение 10'),
-            MaxValueValidator(10000, message='Максимальное значение 1000')
-        ]
     )
     image = models.ImageField(
         'Изображение',
