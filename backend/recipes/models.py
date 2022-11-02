@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import (MaxValueValidator, MinValueValidator,
-                                    RegexValidator)
+                                    RegexValidator, MinLengthValidator, MaxLengthValidator)
 from django.db import models
 from django.db.models import UniqueConstraint
 
@@ -57,6 +57,10 @@ class Recipe(models.Model):
     )
     text = models.TextField(
         'Описание',
+        validators =[
+            MinLengthValidator(10, message='Минимальная длина 10'),
+            MaxLengthValidator(10000, message='Максимальная длина 10000')
+        ]
     )
     image = models.ImageField(
         'Изображение',
