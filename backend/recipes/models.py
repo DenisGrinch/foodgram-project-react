@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import CICharField
 from django.core.validators import (MaxLengthValidator, MaxValueValidator,
                                     MinLengthValidator, MinValueValidator,
                                     RegexValidator)
@@ -25,7 +26,7 @@ class Ingredient(models.Model):
 class Tag(models.Model):
     """Модель тега"""
     name = models.CharField('Название', unique=True, max_length=50)
-    color = models.CharField(
+    color = CICharField(
         'Цветовой HEX-код',
         unique=True,
         max_length=7,
