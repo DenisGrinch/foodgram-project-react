@@ -5,6 +5,7 @@ from django.core.validators import (MaxLengthValidator, MaxValueValidator,
                                     RegexValidator)
 from django.db import models
 from django.db.models import UniqueConstraint
+from .customfields import CICharField
 
 User = get_user_model()
 
