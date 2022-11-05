@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import (MaxLengthValidator, MaxValueValidator,
-                                    MinLengthValidator, MinValueValidator)
+                                    MinLengthValidator, MinValueValidator,
+                                    RegexValidator)
 from django.db import models
 from django.db.models import UniqueConstraint
 
@@ -30,6 +31,12 @@ class Tag(models.Model):
         'Цветовой HEX-код',
         unique=True,
         max_length=7,
+        validators=[
+            RegexValidator(
+                regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+                message='Введенное значение не является цветом в формате HEX!'
+            )
+        ]
     )
     slug = models.SlugField('Уникальный слаг', unique=True, max_length=50)
 
