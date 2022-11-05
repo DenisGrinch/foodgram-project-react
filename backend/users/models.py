@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import CheckConstraint, UniqueConstraint
+from django.db.models import UniqueConstraint, CheckConstraint
 
 
 class User(AbstractUser):
@@ -47,9 +47,9 @@ class Subscribe(models.Model):
             UniqueConstraint(fields=['user', 'author'],
                              name='unique_subscription'),
             CheckConstraint(
-                name="%(app_label)s_%(class)s_prevent_self_follow",
-                check=~models.Q(user=models.F("author")),
-            )
+                check=~models.Q(user=models.F('author')),
+                name='users_cannot_subscribe_themselves')
+
         ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
