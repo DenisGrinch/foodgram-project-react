@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.fields import CICharField
 from django.core.validators import (MaxLengthValidator, MaxValueValidator,
                                     MinLengthValidator, MinValueValidator)
 from django.db import models
